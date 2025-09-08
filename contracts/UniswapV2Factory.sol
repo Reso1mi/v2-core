@@ -6,6 +6,7 @@ import './UniswapV2Pair.sol';
 contract UniswapV2Factory is IUniswapV2Factory {
     address public feeTo;
     address public feeToSetter;
+    bytes32 public pairCodeHash;
 
     mapping(address => mapping(address => address)) public getPair;
     address[] public allPairs;
@@ -14,6 +15,8 @@ contract UniswapV2Factory is IUniswapV2Factory {
 
     constructor(address _feeToSetter) public {
         feeToSetter = _feeToSetter;
+        // 动态计算并存储 pair code hash
+        pairCodeHash = keccak256(type(UniswapV2Pair).creationCode);
     }
 
     function allPairsLength() external view returns (uint) {
